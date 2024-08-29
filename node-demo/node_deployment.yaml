@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejsdemo
+  labels:
+    app: nodejsdemo
+    component: demoapp
+spec:
+  selector:
+    matchLabels:
+      app: nodejsdemo
+      component: demoapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nodejsdemo
+        component: demoapp
+    spec:
+      containers:
+        - name: nodejsdemo
+          image: hrexed/nodejsk8s:sqlcommenter_0.1
+          imagePullPolicy: Always
+          env:
+            - name: NODE_ENV
+              value: "development"
+            - name: PORT
+              value: "3000"
+            - name: POSTGRES_HOST
+              value: "postgres-service"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: OTLP_COLLECTOR_HOST
+              value: "otel-collector.default.svc.cluster.local"
+            - name: OTLP_COLLECTOR_PORT
+              value: "4317"
+          volumeMounts:
+            - name: postgres-secret
+              mountPath: /secrets/
+              readOnly: true
+      volumes:
+        - name: postgres-secret
+          secret:
+            secretName: postgres-secret
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejsdemo
+  labels:
+    app: nodejsdemo
+spec:
+  selector:
+    app: nodejsdemo
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      appProtocol: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodejsdemo-app-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "postddemo.IP_TO_REPLACE.nip.io"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nodejsdemo
+                port:
+                  number: 3000

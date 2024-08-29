@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  init.sql: |
+   CREATE EXTENSION pg_stat_statements;
