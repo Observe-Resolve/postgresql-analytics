@@ -2,8 +2,8 @@
 <p align="center"><img src="/image/logo.png" width="40%" alt="Is It observable Logo" /></p>
 
 ## Episode : Analyze the PostgreSQL queries
-This repository contains the files utilized during the tutorial presented in the dedicated IsItObservable episode related to Nginx Instrumentation.
-<p align="center"><img src="/image/NGINX-Ingress-Controller.png" width="40%" alt="nginx Logo" /></p>
+This repository contains the files utilized during the tutorial presented in the dedicated Observe&Resolve episode related to PostgresSQL Analytics.
+<p align="center"><img src="/image/PostgreSQL-Logo.wine.png" width="40%" alt="posgres Logo" /></p>
 
 this tutorial will also utilize the OpenTelemetry Operator with:
 * PostgreSQL demo application
