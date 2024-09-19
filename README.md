@@ -1,5 +1,5 @@
 # Observe & Resolve 
-<p align="center"><img src="/image/logo.png" width="40%" alt="Is It observable Logo" /></p>
+<p align="center"><img src="/image/logo.png" width="40%" alt="Observe & Resolve logo" /></p>
 
 ## Episode : Analyze the PostgreSQL queries
 This repository contains the files utilized during the tutorial presented in the dedicated Observe&Resolve episode related to PostgresSQL Analytics.
